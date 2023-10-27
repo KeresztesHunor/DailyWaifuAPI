@@ -1,5 +1,6 @@
 import DataService from "../Model/DataService.js";
 import WaifuModel from "../Model/WaifuModel.js";
+import CATEGORIES from "../Model/categories.js";
 import WaifuView from "../View/WaifuView.js";
 import CategoryCallbackData from "./CategoryCallbackData.js";
 
@@ -10,7 +11,7 @@ class WaifuController
     constructor()
     {
         this.#dataService = new DataService();
-        const WAIFU_MODEL = new WaifuModel(["waifu"]);
+        const WAIFU_MODEL = new WaifuModel(CATEGORIES);
         const WAIFU_VIEW = new WaifuView($("#waifu"));
         $(window).on("clickedWaifuButtonEvent", event => {
             if (event.detail.right)
@@ -21,7 +22,15 @@ class WaifuController
             {
                 WAIFU_MODEL.decrementWaifuIndex(WAIFU_MODEL.currentCategory);
             }
-            WAIFU_VIEW.loadWaifuImage(WAIFU_MODEL.getWaifuURL(WAIFU_MODEL.currentCategory, WAIFU_MODEL.getCurrentImageIndex(WAIFU_MODEL.currentCategory)));
+            const WAIFU_URL = WAIFU_MODEL.getWaifuURL(WAIFU_MODEL.currentCategory, WAIFU_MODEL.getCurrentImageIndex(WAIFU_MODEL.currentCategory));
+            WAIFU_VIEW.loadWaifuImage(WAIFU_URL);
+            WAIFU_VIEW.setImageURLText(WAIFU_URL);
+        });
+        $(window).on("numURLsInCategoryChangedEvent", event => {
+            if (event.detail.category === WAIFU_MODEL.currentCategory)
+            {
+                WAIFU_VIEW.setNumWaifusText(WAIFU_MODEL.getCurrentImageIndex(event.detail.category) + 1 + "/" + WAIFU_MODEL.getCategoryListLength(event.detail.category));
+            }
         });
         const CATEGORY_CALLBACK_DATAS = [];
         WAIFU_MODEL.categories.forEach(category => {

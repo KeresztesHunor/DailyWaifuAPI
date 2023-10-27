@@ -12,7 +12,9 @@ class CategoryCallbackData
             waifuModel.addWaifuURL(category, data.url);
             if (category === waifuModel.currentCategory)
             {
-                waifuView.loadWaifuImage(waifuModel.getWaifuURL(category, 0));
+                const WAIFU_URL = waifuModel.getWaifuURL(category, 0);
+                waifuView.loadWaifuImage(WAIFU_URL);
+                waifuView.setImageURLText(WAIFU_URL);
             }
             this.#callbackMethod = data => {
                 waifuModel.addWaifuURL(category, data.url);

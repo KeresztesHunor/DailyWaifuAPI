@@ -64,6 +64,11 @@ class WaifuModel
         if (i >= CATEGORY_LIST.length)
         {
             this.#waifuList[category].urlList.push(url);
+            window.dispatchEvent(new CustomEvent("numURLsInCategoryChangedEvent", {
+                detail: {
+                    category: category
+                }
+            }));
         }
     }
 
