@@ -1,5 +1,7 @@
 const CATEGORIES = [
-    "waifu"
+    "waifu",
+    "neko",
+    "awoo"
 ];
 
 export default CATEGORIES;
