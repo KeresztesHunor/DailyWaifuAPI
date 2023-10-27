@@ -43,7 +43,7 @@ function loadWaifu(index)
         <img src="${WAIFU_URL}" alt="waifuIndex: ${index}">
     `);
     FOOTER_ELEMENT.html(WAIFU_URL);
-    NUM_WAIFUS_ELEMENT.html(waifuIndex + 1 + "/" + WAIFU_LIST.length);
+    writeNumWaifus();
 }
 
 function writeNumWaifus()
@@ -70,5 +70,8 @@ function getWaifu()
     fetch("https://api.waifu.pics/sfw/waifu")
         .then(response => response.json())
         .then(addNewWaifuToListAndInitIfFirst)
-        .catch(console.log);
+        .catch(error => {
+            console.log(error);
+            getWaifu();
+        })
 }
