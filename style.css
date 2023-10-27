@@ -3,12 +3,11 @@
 }
 
 header > h1,
-footer,
-#num-waifus {
+footer {
     text-align: center;
 }
 
-#waifu-images {
+#waifu {
     width: 100%;
     max-width: 512px;
     margin: auto;
@@ -16,12 +15,11 @@ footer,
     grid-template-columns: 32px auto 32px;
 }
 
-#left,
-#right {
+#waifu > div > button {
     width: 100%;
     height: 100%;
 }
 
-#waifu > img {
+#waifu > div > img {
     width: 100%;
 }
