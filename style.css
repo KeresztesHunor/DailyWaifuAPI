@@ -46,6 +46,12 @@ nav > ul > li > a:active {
     transition-duration: 0ms;
 }
 
+footer {
+    padding: 16px;
+    background-color: hsl(210, 100%, 50%);
+    color: white;
+}
+
 #waifu > div {
     width: 100%;
     max-width: 512px;
