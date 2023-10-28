@@ -2,10 +2,12 @@ class WaifuModel
 {
     #categories;
     #waifuList;
+    #blacklist
 
-    constructor(categories)
+    constructor(categories, blacklist)
     {
         this.#categories = categories;
+        this.#blacklist = blacklist;
         this.#waifuList = {};
         this.#categories.forEach(category => {
             this.#waifuList[category] = {
@@ -49,20 +51,28 @@ class WaifuModel
 
     addWaifuURL(category, url)
     {
-        const CATEGORY_LIST = this.#waifuList[category].urlList;
         let i = 0;
-        while (i < CATEGORY_LIST.length && CATEGORY_LIST[i] !== url)
+        while (i < this.#blacklist.length && this.#blacklist[i] !== url)
         {
             i++;
         }
-        if (i >= CATEGORY_LIST.length)
+        if (i >= this.#blacklist.length)
         {
-            this.#waifuList[category].urlList.push(url);
-            window.dispatchEvent(new CustomEvent("numURLsInCategoryChangedEvent", {
-                detail: {
-                    category: category
-                }
-            }));
+            const CATEGORY_LIST = this.#waifuList[category].urlList;
+            let j = 0;
+            while (j < CATEGORY_LIST.length && CATEGORY_LIST[j] !== url)
+            {
+                j++;
+            }
+            if (j >= CATEGORY_LIST.length)
+            {
+                this.#waifuList[category].urlList.push(url);
+                window.dispatchEvent(new CustomEvent("numURLsInCategoryChangedEvent", {
+                    detail: {
+                        category: category
+                    }
+                }));
+            }
         }
     }
 

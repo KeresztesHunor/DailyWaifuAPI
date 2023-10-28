@@ -1,6 +1,6 @@
 import DataService from "../Model/DataService.js";
 import WaifuModel from "../Model/WaifuModel.js";
-import CATEGORIES from "../Model/categories.js";
+import { BLACKLIST, CATEGORIES } from "../Model/categories.js";
 import NavbarView from "../View/NavbarView.js";
 import WaifuView from "../View/WaifuView.js";
 import CategoryCallbackData from "./CategoryCallbackData.js";
@@ -15,8 +15,8 @@ class WaifuController
     constructor()
     {
         this.#dataService = new DataService();
-        this.#navbarView = new NavbarView($("nav"));
-        this.#waifuModel = new WaifuModel(CATEGORIES);
+        this.#navbarView = new NavbarView($("nav"), CATEGORIES);
+        this.#waifuModel = new WaifuModel(CATEGORIES, BLACKLIST);
         this.#waifuView = new WaifuView($("#waifu"));
         $(window).on("clickedWaifuButtonEvent", event => {
             if (event.detail.right)

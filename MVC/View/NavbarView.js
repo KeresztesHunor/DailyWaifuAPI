@@ -1,19 +1,18 @@
 import { tagTwo } from "../../htmlUtils.js";
-import CATEGORIES from "../Model/categories.js";
 import NavbarButtonView from "./NavbarButtonView.js";
 
 class NavbarView
 {
     #categoryButtons;
 
-    constructor(parentElement)
+    constructor(parentElement, categories)
     {
         parentElement.append(
             tagTwo("ul")
         );
         this.#categoryButtons = {};
         const BUTTON_LIST_ELEMENT = parentElement.children("ul");
-        CATEGORIES.forEach(category => {
+        categories.forEach(category => {
             this.#categoryButtons[category] = new NavbarButtonView(BUTTON_LIST_ELEMENT, category);
         });
     }
