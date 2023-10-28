@@ -1,28 +1,28 @@
-export function tagTwo(tag, parameterek = {}, tartalom = [])
+export function tagTwo(tag, parameters = {}, content = [])
 {
     let txt = "";
-    tartalom.forEach(elem => txt += elem);
-    return `${tagOne(tag, parameterek)}${txt}</${tag}>`;
+    content.forEach(element => txt += element);
+    return `${tagOne(tag, parameters)}${txt}</${tag}>`;
 }
 
-export function tagLst(lista, callbackFuggveny)
+export function tagLst(list, callbackMethod)
 {
     let txt = "";
-    lista.forEach(elem => txt += callbackFuggveny(elem));
+    list.forEach(element => txt += callbackMethod(element));
     return txt;
 }
 
-export function tagDct(dict, callbackMetodus)
+export function tagDct(dict, callbackMethod)
 {
     let txt = "";
-    for (const kulcs in dict)
+    for (const KEY in dict)
     {
-        txt += callbackMetodus(kulcs, dict[kulcs]);
+        txt += callbackMethod(KEY, dict[KEY]);
     }
     return txt;
 }
 
-export function tagOne(tag, parameterek = {})
+export function tagOne(tag, parameters = {})
 {
-    return `<${tag}${tagDct(parameterek, (kulcs, ertek) => ` ${kulcs}="${ertek}"`)}>`;
+    return `<${tag}${tagDct(parameters, (key, value) => ` ${key}="${value}"`)}>`;
 }

@@ -2,7 +2,6 @@ class WaifuModel
 {
     #categories;
     #waifuList;
-    #currentCategory;
 
     constructor(categories)
     {
@@ -14,17 +13,12 @@ class WaifuModel
                 currentIndex: 0
             };
         });
-        this.#currentCategory = this.#categories[0];
+        this.currentCategory = this.#categories[0];
     }
 
     get categories()
     {
         return this.#categories;
-    }
-
-    get currentCategory()
-    {
-        return this.#currentCategory;
     }
 
     incrementWaifuIndex(category)

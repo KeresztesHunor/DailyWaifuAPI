@@ -2,11 +2,48 @@
     box-sizing: border-box;
 }
 
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 header > h1,
 footer,
 #waifu > h3,
 #waifu > p {
     text-align: center;
+}
+
+nav {
+    background-color: hsl(210, 100%, 50%);
+}
+
+nav > ul {
+    margin: 0;
+    padding: 0 16px;
+}
+
+nav > ul > li {
+    display: inline-block;
+    width: 128px;
+}
+
+nav > ul > li > a {
+    display: block;
+    padding: 16px 8px;
+    text-decoration: none;
+    color: white;
+    transition-duration: 250ms;
+}
+
+nav > ul > li > a:hover {
+    background-color: hsl(210, 100%, 60%);
+    transition-duration: 250ms;
+}
+
+nav > ul > li > a:active {
+    background-color: hsl(210, 100%, 70%);
+    transition-duration: 0ms;
 }
 
 #waifu > div {
