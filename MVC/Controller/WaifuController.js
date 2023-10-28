@@ -1,6 +1,6 @@
 import DataService from "../Model/DataService.js";
 import WaifuModel from "../Model/WaifuModel.js";
-import { BLACKLIST, CATEGORIES } from "../Model/categories.js";
+import { BLACKLIST, CATEGORIES } from "../Model/data.js";
 import NavbarView from "../View/NavbarView.js";
 import WaifuView from "../View/WaifuView.js";
 import CategoryCallbackData from "./CategoryCallbackData.js";
@@ -17,7 +17,11 @@ class WaifuController
         this.#dataService = new DataService();
         this.#navbarView = new NavbarView($("nav"), CATEGORIES);
         this.#waifuModel = new WaifuModel(CATEGORIES, BLACKLIST);
-        this.#waifuView = new WaifuView($("#waifu"));
+        this.#waifuView = new WaifuView($("article"));
+        $(window).resize(() => {
+            this.#setImageMaxHeight();
+        });
+        this.#setImageMaxHeight();
         $(window).on("clickedWaifuButtonEvent", event => {
             if (event.detail.right)
             {
@@ -54,11 +58,16 @@ class WaifuController
         this.#waifuView.setNumWaifusText(this.#waifuModel.getCurrentImageIndex(category) + 1 + "/" + this.#waifuModel.getCategoryListLength(category));
     }
 
+    #setImageMaxHeight()
+    {
+        this.#waifuView.setWaifuImageMaxHeight(Math.floor(this.#waifuView.getImagePlaceElementHeight()));
+    }
+
     #loadWaifuImage()
     {
         const WAIFU_URL = this.#waifuModel.getWaifuURL(this.#waifuModel.currentCategory, this.#waifuModel.getCurrentImageIndex(this.#waifuModel.currentCategory));
         this.#setNumWaifusText(this.#waifuModel.currentCategory);
-        this.#waifuView.loadWaifuImage(WAIFU_URL);
+        this.#waifuView.loadWaifuImage(WAIFU_URL, WAIFU_URL);
         this.#waifuView.setImageURLText(WAIFU_URL);
     }
 }

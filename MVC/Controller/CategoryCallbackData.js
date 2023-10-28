@@ -9,15 +9,15 @@ class CategoryCallbackData
         this.#category = category;
         this.#dataService = dataService;
         this.#callbackMethod = data => {
-            waifuModel.addWaifuURL(category, data.url);
-            if (category === waifuModel.currentCategory)
+            waifuModel.addWaifuURL(this.#category, data.url);
+            if (this.#category === waifuModel.currentCategory)
             {
-                const WAIFU_URL = waifuModel.getWaifuURL(category, 0);
-                waifuView.loadWaifuImage(WAIFU_URL);
+                const WAIFU_URL = waifuModel.getWaifuURL(this.#category, 0);
+                waifuView.loadWaifuImage(WAIFU_URL, WAIFU_URL);
                 waifuView.setImageURLText(WAIFU_URL);
             }
             this.#callbackMethod = data => {
-                waifuModel.addWaifuURL(category, data.url);
+                waifuModel.addWaifuURL(this.#category, data.url);
                 this.getWaifu();
             };
             this.getWaifu();
