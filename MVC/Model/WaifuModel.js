@@ -51,34 +51,30 @@ class WaifuModel
 
     addWaifuURL(category, url)
     {
-        let i = 0;
-        while (i < this.#blacklist.length && this.#blacklist[i] !== url)
+        if (url.substring(url.length - 3, url.length).toLowerCase() !== "gif" && this.#isInList(this.#blacklist, url) && this.#isInList(this.#waifuList[category].urlList, url))
         {
-            i++;
-        }
-        if (i >= this.#blacklist.length)
-        {
-            const CATEGORY_LIST = this.#waifuList[category].urlList;
-            let j = 0;
-            while (j < CATEGORY_LIST.length && CATEGORY_LIST[j] !== url)
-            {
-                j++;
-            }
-            if (j >= CATEGORY_LIST.length)
-            {
-                this.#waifuList[category].urlList.push(url);
-                window.dispatchEvent(new CustomEvent("numURLsInCategoryChangedEvent", {
-                    detail: {
-                        category: category
-                    }
-                }));
-            }
+            this.#waifuList[category].urlList.push(url);
+            window.dispatchEvent(new CustomEvent("numURLsInCategoryChangedEvent", {
+                detail: {
+                    category: category
+                }
+            }));
         }
     }
 
     getWaifuURL(category, index)
     {
         return this.#waifuList[category].urlList[index];
+    }
+
+    #isInList(list, item)
+    {
+        let i = 0;
+        while (i < list.length && list[i] !== item)
+        {
+            i++;
+        }
+        return i >= list.length;
     }
 }
 

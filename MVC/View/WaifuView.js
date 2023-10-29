@@ -11,15 +11,17 @@ class WaifuView
     constructor(parentElement)
     {
         this.#waifuImageMaxHeight = "100%";
-        this.#appendButton(parentElement, "◀", false);
         parentElement.append(
+            tagTwo("button", {}, ["◀"]),
             tagTwo("div", {}, [
                 tagTwo("h3", {}, ["0/0"]),
                 tagTwo("div"),
                 tagTwo("p", {}, ["no waifu image url to display"])
-            ])
+            ]),
+            tagTwo("button", {}, ["▶"])
         );
-        this.#appendButton(parentElement, "▶", true);
+        this.#setButtonEvent(parentElement.children("button:first-child"), false);
+        this.#setButtonEvent(parentElement.children("button:last-child"), true);
         const WAIFU_ELEMENT = parentElement.children("div");
         this.#numWaifusElement = WAIFU_ELEMENT.children("h3");
         this.#imagePlaceElement = WAIFU_ELEMENT.children("div");
@@ -59,17 +61,14 @@ class WaifuView
         this.#waifuImageElement.css("max-height", this.#waifuImageMaxHeight);
     }
 
-    #appendButton(parentElement, buttonText, right)
+    #setButtonEvent(buttonElement, right)
     {
-        parentElement.append(
-            tagTwo("button", {}, [buttonText])
-        );
         const CLICK_EVENT = new CustomEvent("clickedWaifuButtonEvent", {
             detail: {
                 right: right
             }
         });
-        parentElement.children("button:last-child").on("click", event => {
+        buttonElement.on("click", event => {
             event.preventDefault();
             window.dispatchEvent(CLICK_EVENT);
         });

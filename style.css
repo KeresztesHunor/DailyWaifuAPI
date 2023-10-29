@@ -1,3 +1,13 @@
+:root {
+    --base-color-lighter: hsl(210, 100%, 70%);
+    --base-color-light: hsl(210, 100%, 60%);
+
+    --base-color: hsl(210, 100%, 50%);
+    
+    --base-color-dark: hsl(210, 100%, 40%);
+    --base-color-darker: hsl(210, 100%, 30%);
+}
+
 * {
     box-sizing: border-box;
 }
@@ -20,8 +30,9 @@ footer {
     text-align: center;
 }
 
-nav {
-    background-color: hsl(210, 100%, 50%);
+nav,
+footer {
+    background-color: var(--base-color);
 }
 
 nav > ul {
@@ -43,12 +54,12 @@ nav > ul > li > a {
 }
 
 nav > ul > li > a:hover {
-    background-color: hsl(210, 100%, 60%);
+    background-color: var(--base-color-light);
     transition-duration: 250ms;
 }
 
 nav > ul > li > a:active {
-    background-color: hsl(210, 100%, 70%);
+    background-color: var(--base-color-lighter);
     transition-duration: 0ms;
 }
 
@@ -56,6 +67,36 @@ article {
     width: 100%;
     display: grid;
     grid-template-columns: 64px auto 64px;
+}
+
+article > button {
+    font-size: 32px;
+    color: white;
+    text-shadow:
+        0 0 1px var(--base-color),
+        0 0 2px var(--base-color),
+        0 0 4px var(--base-color),
+        0 0 8px var(--base-color);
+    background-color: white;
+    border: 0;
+}
+
+article > button:first-child {
+    transition-duration: 250ms;
+}
+
+article > button:first-child:hover {
+    box-shadow: 64px 0 64px -64px black inset;
+    transition-duration: 250ms;
+}
+
+article > button:last-child {
+    transition-duration: 250ms;
+}
+
+article > button:last-child:hover {
+    box-shadow: -64px 0 64px -64px black inset;
+    transition-duration: 250ms;
 }
 
 article > div {
@@ -67,11 +108,12 @@ article > div > div > img {
     display: block;
     margin: auto;
     max-width: 100%;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
 }
 
 footer {
     padding: 16px;
-    background-color: hsl(210, 100%, 50%);
     color: white;
 }
 
