@@ -4,8 +4,10 @@ export const CATEGORIES = [
     "awoo"
 ];
 
+export const URL_BASE = "https://i.waifu.pics/";
+
 export const BLACKLIST = [
-    "https://i.waifu.pics/HHquLhX.png",
-    "https://i.waifu.pics/i~RQhRD.png",
-    "https://i.waifu.pics/6sIy5wM.jpg"
+    "HHquLhX.png",
+    "i~RQhRD.png",
+    "6sIy5wM.jpg"
 ];

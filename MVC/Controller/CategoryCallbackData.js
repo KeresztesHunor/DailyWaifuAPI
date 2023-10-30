@@ -1,3 +1,5 @@
+import { URL_BASE } from "../Model/data.js";
+
 class CategoryCallbackData
 {
     #category;
@@ -9,15 +11,15 @@ class CategoryCallbackData
         this.#category = category;
         this.#dataService = dataService;
         this.#callbackMethod = data => {
-            waifuModel.addWaifuURL(this.#category, data.url);
+            waifuModel.addWaifuURL(this.#category, data.url.substring(URL_BASE.length));
             if (this.#category === waifuModel.currentCategory)
             {
-                const WAIFU_URL = waifuModel.getWaifuURL(this.#category, 0);
+                const WAIFU_URL = URL_BASE + waifuModel.getWaifuURL(this.#category, 0);
                 waifuView.loadWaifuImage(WAIFU_URL, WAIFU_URL);
                 waifuView.setImageURLText(WAIFU_URL);
             }
             this.#callbackMethod = data => {
-                waifuModel.addWaifuURL(this.#category, data.url);
+                waifuModel.addWaifuURL(this.#category, data.url.substring(URL_BASE.length));
                 this.getWaifu();
             };
             this.getWaifu();

@@ -104,6 +104,10 @@ article > div {
     grid-template-rows: auto 1fr auto;
 }
 
+article > div > div {
+    padding: 0 16px;
+}
+
 article > div > div > img {
     display: block;
     margin: auto;

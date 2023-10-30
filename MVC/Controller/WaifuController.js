@@ -1,6 +1,6 @@
 import DataService from "../Model/DataService.js";
 import WaifuModel from "../Model/WaifuModel.js";
-import { BLACKLIST, CATEGORIES } from "../Model/data.js";
+import { BLACKLIST, CATEGORIES, URL_BASE } from "../Model/data.js";
 import NavbarView from "../View/NavbarView.js";
 import WaifuView from "../View/WaifuView.js";
 import CategoryCallbackData from "./CategoryCallbackData.js";
@@ -65,7 +65,7 @@ class WaifuController
 
     #loadWaifuImage()
     {
-        const WAIFU_URL = this.#waifuModel.getWaifuURL(this.#waifuModel.currentCategory, this.#waifuModel.getCurrentImageIndex(this.#waifuModel.currentCategory));
+        const WAIFU_URL = URL_BASE + this.#waifuModel.getWaifuURL(this.#waifuModel.currentCategory, this.#waifuModel.getCurrentImageIndex(this.#waifuModel.currentCategory));
         this.#setNumWaifusText(this.#waifuModel.currentCategory);
         this.#waifuView.loadWaifuImage(WAIFU_URL, WAIFU_URL);
         this.#waifuView.setImageURLText(WAIFU_URL);

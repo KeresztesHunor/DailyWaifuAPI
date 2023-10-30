@@ -2,7 +2,7 @@ class WaifuModel
 {
     #categories;
     #waifuList;
-    #blacklist
+    #blacklist;
 
     constructor(categories, blacklist)
     {
