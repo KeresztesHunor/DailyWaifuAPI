@@ -22,7 +22,7 @@ class WaifuController
             this.#setImageMaxHeight();
         });
         this.#setImageMaxHeight();
-        $(window).on("clickedWaifuButtonEvent", event => {
+        this.#defineCustomEventResponse("clickedWaifuButtonEvent", event => {
             if (event.detail.right)
             {
                 this.#waifuModel.incrementWaifuIndex(this.#waifuModel.currentCategory);
@@ -33,14 +33,14 @@ class WaifuController
             }
             this.#loadWaifuImage();
         });
-        $(window).on("numURLsInCategoryChangedEvent", event => {
+        this.#defineCustomEventResponse("numURLsInCategoryChangedEvent", event => {
             if (event.detail.category === this.#waifuModel.currentCategory)
             {
                 this.#setNumWaifusText(event.detail.category);
             }
             this.#navbarView.setCategoryButtonTextNumber(event.detail.category, this.#waifuModel.getCategoryListLength(event.detail.category));
         });
-        $(window).on("clickedCategoryButtonEvent", event => {
+        this.#defineCustomEventResponse("clickedCategoryButtonEvent", event => {
             this.#waifuModel.currentCategory = event.detail.category;
             this.#loadWaifuImage();
         });
@@ -69,6 +69,11 @@ class WaifuController
         this.#setNumWaifusText(this.#waifuModel.currentCategory);
         this.#waifuView.loadWaifuImage(WAIFU_URL, WAIFU_URL);
         this.#waifuView.setImageURLText(WAIFU_URL);
+    }
+
+    #defineCustomEventResponse(eventName, method)
+    {
+        $(window).on(eventName, method);
     }
 }
 
