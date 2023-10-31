@@ -1,22 +1,17 @@
-import DataService from "../Model/DataService.js";
 import WaifuModel from "../Model/WaifuModel.js";
-import { BLACKLIST, CATEGORIES, URL_BASE } from "../Model/data.js";
 import NavbarView from "../View/NavbarView.js";
 import WaifuView from "../View/WaifuView.js";
-import CategoryCallbackData from "./CategoryCallbackData.js";
 
 class WaifuController
 {
-    #dataService;
     #navbarView;
     #waifuModel;
     #waifuView;
 
     constructor()
     {
-        this.#dataService = new DataService();
-        this.#navbarView = new NavbarView($("nav"), CATEGORIES);
-        this.#waifuModel = new WaifuModel(CATEGORIES, BLACKLIST);
+        this.#waifuModel = new WaifuModel();
+        this.#navbarView = new NavbarView($("nav"), this.#waifuModel.categories);
         this.#waifuView = new WaifuView($("article"));
         $(window).resize(() => {
             this.#setImageMaxHeight();
@@ -33,6 +28,22 @@ class WaifuController
             }
             this.#loadWaifuImage();
         });
+        this.#defineCustomEventResponse("clickedOpinionButtonEvent", event => {
+            switch (event)
+            {
+                case "favorite":
+                    break;
+                case "like":
+                    break;
+                case "dislike":
+                    break;
+                case "blacklist":
+                    break;
+                default:
+                    console.error("No such opinion button specified: " + event.detail.opinion);
+                    break;
+            }
+        });
         this.#defineCustomEventResponse("numURLsInCategoryChangedEvent", event => {
             if (event.detail.category === this.#waifuModel.currentCategory)
             {
@@ -44,12 +55,12 @@ class WaifuController
             this.#waifuModel.currentCategory = event.detail.category;
             this.#loadWaifuImage();
         });
-        const CATEGORY_CALLBACK_DATAS = [];
-        this.#waifuModel.categories.forEach(category => {
-            CATEGORY_CALLBACK_DATAS.push(new CategoryCallbackData(category, this.#dataService, this.#waifuModel, this.#waifuView));
+        this.#defineCustomEventResponse("readyToLoadFirstImageEvent", event => {
+            this.#waifuView.loadWaifuImage(event.detail.url, event.detail.url);
+            this.#waifuView.setImageLink(event.detail.url);
         });
-        CATEGORY_CALLBACK_DATAS.forEach(categoryCallbackData => {
-            categoryCallbackData.getWaifu();
+        this.#waifuModel.categories.forEach(category => {
+            this.#waifuModel.getWaifu(category);
         });
     }
 
@@ -65,10 +76,10 @@ class WaifuController
 
     #loadWaifuImage()
     {
-        const WAIFU_URL = URL_BASE + this.#waifuModel.getWaifuURL(this.#waifuModel.currentCategory, this.#waifuModel.getCurrentImageIndex(this.#waifuModel.currentCategory));
+        const WAIFU_URL = this.#waifuModel.urlBase + this.#waifuModel.getWaifuURL(this.#waifuModel.currentCategory, this.#waifuModel.getCurrentImageIndex(this.#waifuModel.currentCategory));
         this.#setNumWaifusText(this.#waifuModel.currentCategory);
         this.#waifuView.loadWaifuImage(WAIFU_URL, WAIFU_URL);
-        this.#waifuView.setImageURLText(WAIFU_URL);
+        this.#waifuView.setImageLink(WAIFU_URL);
     }
 
     #defineCustomEventResponse(eventName, method)

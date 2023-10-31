@@ -1,13 +1,17 @@
+import { BLACKLIST, CATEGORIES, URL_BASE } from "./data.js";
+
 class WaifuModel
 {
     #categories;
     #waifuList;
+    #urlBase;
     #blacklist;
+    #callbackMethod;
 
-    constructor(categories, blacklist)
+    constructor()
     {
-        this.#categories = categories;
-        this.#blacklist = blacklist;
+        this.#categories = CATEGORIES;
+        this.#blacklist = BLACKLIST;
         this.#waifuList = {};
         this.#categories.forEach(category => {
             this.#waifuList[category] = {
@@ -15,12 +19,34 @@ class WaifuModel
                 currentIndex: 0
             };
         });
+        this.#urlBase = URL_BASE;
         this.currentCategory = this.#categories[0];
+        this.#callbackMethod = (data, category) => {
+            this.#addWaifuUrlToList(category, data.url);
+            if (category === this.currentCategory)
+            {
+                window.dispatchEvent(new CustomEvent("readyToLoadFirstImageEvent", {
+                    detail: {
+                        url: this.#urlBase + this.getWaifuURL(category, 0)
+                    }
+                }));
+                this.#callbackMethod = (data, category) => {
+                    this.#addWaifuUrlToList(category, data.url);
+                    this.getWaifu(category);
+                };
+            }
+            this.getWaifu(category);
+        }
     }
 
     get categories()
     {
         return this.#categories;
+    }
+
+    get urlBase()
+    {
+        return this.#urlBase;
     }
 
     incrementWaifuIndex(category)
@@ -65,6 +91,24 @@ class WaifuModel
     getWaifuURL(category, index)
     {
         return this.#waifuList[category].urlList[index];
+    }
+
+    getWaifu(category)
+    {
+        fetch("https://api.waifu.pics/sfw/" + category)
+            .then(respose => respose.json())
+            .then(data => {
+                this.#callbackMethod(data, category);
+            })
+            .catch(error => {
+                console.error(error);
+                this.getWaifu(category);
+            });
+    }
+
+    #addWaifuUrlToList(category, url)
+    {
+        this.addWaifuURL(category, url.substring(URL_BASE.length));
     }
 
     #isInList(list, item)
