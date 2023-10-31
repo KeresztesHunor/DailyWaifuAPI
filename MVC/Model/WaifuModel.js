@@ -4,14 +4,14 @@ class WaifuModel
 {
     #categories;
     #waifuList;
-    #urlBase;
+    #opinionLists;
     #blacklist;
+    #urlBase;
     #callbackMethod;
 
     constructor()
     {
         this.#categories = CATEGORIES;
-        this.#blacklist = BLACKLIST;
         this.#waifuList = {};
         this.#categories.forEach(category => {
             this.#waifuList[category] = {
@@ -19,6 +19,12 @@ class WaifuModel
                 currentIndex: 0
             };
         });
+        this.#opinionLists = {
+            favorite: [],
+            like: [],
+            dislike: []
+        };
+        this.#blacklist = BLACKLIST;
         this.#urlBase = URL_BASE;
         this.currentCategory = this.#categories[0];
         this.#callbackMethod = (data, category) => {
@@ -27,15 +33,13 @@ class WaifuModel
             {
                 window.dispatchEvent(new CustomEvent("readyToLoadFirstImageEvent", {
                     detail: {
-                        url: this.#urlBase + this.getWaifuURL(category, 0)
+                        url: this.#urlBase + this.getCurrentWaifuURL(category, 0)
                     }
                 }));
                 this.#callbackMethod = (data, category) => {
                     this.#addWaifuUrlToList(category, data.url);
-                    this.getWaifu(category);
                 };
             }
-            this.getWaifu(category);
         }
     }
 
@@ -47,6 +51,21 @@ class WaifuModel
     get urlBase()
     {
         return this.#urlBase;
+    }
+
+    addToOpinionList(opinion, url)
+    {
+        this.#opinionLists[opinion].push(url);
+    }
+
+    removeFromOpinionList(opinion, url)
+    {
+        this.#opinionLists[opinion].splice(this.#opinionLists[opinion].indexOf(url), 1);
+    }
+
+    isInOpinionList(opinion, url)
+    {
+        return this.#opinionLists[opinion].indexOf(url) !== -1;
     }
 
     incrementWaifuIndex(category)
@@ -77,7 +96,7 @@ class WaifuModel
 
     addWaifuURL(category, url)
     {
-        if (url.substring(url.length - 3, url.length).toLowerCase() !== "gif" && this.#isInList(this.#blacklist, url) && this.#isInList(this.#waifuList[category].urlList, url))
+        if (url.substring(url.length - 3, url.length).toLowerCase() !== "gif" && this.#blacklist.indexOf(url) === -1 && this.#waifuList[category].urlList.indexOf(url) === -1)
         {
             this.#waifuList[category].urlList.push(url);
             window.dispatchEvent(new CustomEvent("numURLsInCategoryChangedEvent", {
@@ -88,9 +107,9 @@ class WaifuModel
         }
     }
 
-    getWaifuURL(category, index)
+    getCurrentWaifuURL()
     {
-        return this.#waifuList[category].urlList[index];
+        return this.#waifuList[this.currentCategory].urlList[this.getCurrentImageIndex(this.currentCategory)];
     }
 
     getWaifu(category)
@@ -100,8 +119,8 @@ class WaifuModel
             .then(data => {
                 this.#callbackMethod(data, category);
             })
-            .catch(error => {
-                console.error(error);
+            .catch(console.error)
+            .finally(() => {
                 this.getWaifu(category);
             });
     }
@@ -109,16 +128,6 @@ class WaifuModel
     #addWaifuUrlToList(category, url)
     {
         this.addWaifuURL(category, url.substring(this.#urlBase.length));
-    }
-
-    #isInList(list, item)
-    {
-        let i = 0;
-        while (i < list.length && list[i] !== item)
-        {
-            i++;
-        }
-        return i >= list.length;
     }
 }
 

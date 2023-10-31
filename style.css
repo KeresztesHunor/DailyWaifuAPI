@@ -157,9 +157,29 @@ article > div > .opinion-buttons-container > .favorite > i {
     color: red;
 }
 
-article > div > .opinion-buttons-container > .like > i,
-article > div > .opinion-buttons-container > .dislike > i {
+article > div > .opinion-buttons-container > .favorite[class~="active"] {
+    background-color: red;
+}
+
+article > div > .opinion-buttons-container > .favorite[class~="active"] > i {
     color: white;
+    text-shadow: none;
+}
+
+article > div > .opinion-buttons-container > button[class*="like"] > i {
+    color: white;
+}
+
+article > div > .opinion-buttons-container > .like[class~="active"] {
+    background-color: blue;
+}
+
+article > div > .opinion-buttons-container > .dislike[class~="active"] {
+    background-color: black;
+}
+
+article > div > .opinion-buttons-container > button[class*="like"][class~="active"] > i {
+    text-shadow: none;
 }
 
 article > div > a {

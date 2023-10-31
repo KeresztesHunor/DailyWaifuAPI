@@ -29,8 +29,7 @@ class WaifuView
                     ]),
                     tagTwo("button", { class: "dislike" }, [
                         tagTwo("i", { class: "fa fa-thumbs-down" })
-                    ]),
-                    tagTwo("button", { class: "blacklist" }, ["❌"])
+                    ])
                 ]),
                 tagTwo("a", { href: "#" }, ["no waifu image url to display"])
             ]),
@@ -44,7 +43,6 @@ class WaifuView
         this.#setUpOpinionButton("favorite");
         this.#setUpOpinionButton("like");
         this.#setUpOpinionButton("dislike");
-        this.#setUpOpinionButton("blacklist");
         this.#imageURLTextElement = WAIFU_ELEMENT.children("a");
         this.#setStepBttonClickEvent(".left-button", false);
         this.#setStepBttonClickEvent(".right-button", true);
@@ -53,9 +51,9 @@ class WaifuView
 
     getImagePlaceElementHeight()
     {
-        this.#waifuImageElement.toggleClass("display-none");
+        this.#toggleDisplayNoneClassOnWaifuImageElement();
         const HEIGHT = this.#imagePlaceElement.height();
-        this.#waifuImageElement.toggleClass("display-none");
+        this.#toggleDisplayNoneClassOnWaifuImageElement();
         return HEIGHT;
     }
 
@@ -89,6 +87,16 @@ class WaifuView
         this.#opinionButtons[opinionButton].toggleClass("active");
     }
 
+    getOpinionButtonActiveState(opinion)
+    {
+        return this.#opinionButtons[opinion].hasClass("active");
+    }
+
+    #toggleDisplayNoneClassOnWaifuImageElement()
+    {
+        this.#waifuImageElement.toggleClass("display-none");
+    }
+
     #setUpOpinionButton(className)
     {
         const OPINION_BUTTON = this.#opinionButtonsContainer.children("." + className);
@@ -98,7 +106,7 @@ class WaifuView
 
     #setStepBttonClickEvent(buttonClass, right)
     {
-        this.#setButtonClickEvent(this.#parentElement.children(buttonClass), "clickedWaifuButtonEvent", { right: right });
+        this.#setButtonClickEvent(this.#parentElement.children(buttonClass), "clickedStepButtonEvent", { right: right });
     }
 
     #setButtonClickEvent(buttonElement, eventName, detail)
