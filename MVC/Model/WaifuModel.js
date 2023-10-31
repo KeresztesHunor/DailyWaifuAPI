@@ -108,7 +108,7 @@ class WaifuModel
 
     #addWaifuUrlToList(category, url)
     {
-        this.addWaifuURL(category, url.substring(URL_BASE.length));
+        this.addWaifuURL(category, url.substring(this.#urlBase.length));
     }
 
     #isInList(list, item)

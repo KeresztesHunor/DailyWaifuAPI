@@ -14,9 +14,9 @@ class WaifuController
         this.#navbarView = new NavbarView($("nav"), this.#waifuModel.categories);
         this.#waifuView = new WaifuView($("article"));
         $(window).resize(() => {
-            this.#setImageMaxHeight();
+            this.#setWaifuImageMaxHeight();
         });
-        this.#setImageMaxHeight();
+        this.#setWaifuImageMaxHeight();
         this.#defineCustomEventResponse("clickedWaifuButtonEvent", event => {
             if (event.detail.right)
             {
@@ -56,8 +56,7 @@ class WaifuController
             this.#loadWaifuImage();
         });
         this.#defineCustomEventResponse("readyToLoadFirstImageEvent", event => {
-            this.#waifuView.loadWaifuImage(event.detail.url, event.detail.url);
-            this.#waifuView.setImageLink(event.detail.url);
+            this.#loadWaifuImageAndSetLink(event.detail.url);
         });
         this.#waifuModel.categories.forEach(category => {
             this.#waifuModel.getWaifu(category);
@@ -69,17 +68,21 @@ class WaifuController
         this.#waifuView.setNumWaifusText(this.#waifuModel.getCurrentImageIndex(category) + 1 + "/" + this.#waifuModel.getCategoryListLength(category));
     }
 
-    #setImageMaxHeight()
+    #setWaifuImageMaxHeight()
     {
         this.#waifuView.setWaifuImageMaxHeight(Math.floor(this.#waifuView.getImagePlaceElementHeight()));
     }
 
     #loadWaifuImage()
     {
-        const WAIFU_URL = this.#waifuModel.urlBase + this.#waifuModel.getWaifuURL(this.#waifuModel.currentCategory, this.#waifuModel.getCurrentImageIndex(this.#waifuModel.currentCategory));
         this.#setNumWaifusText(this.#waifuModel.currentCategory);
-        this.#waifuView.loadWaifuImage(WAIFU_URL, WAIFU_URL);
-        this.#waifuView.setImageLink(WAIFU_URL);
+        this.#loadWaifuImageAndSetLink(this.#waifuModel.urlBase + this.#waifuModel.getWaifuURL(this.#waifuModel.currentCategory, this.#waifuModel.getCurrentImageIndex(this.#waifuModel.currentCategory)));
+    }
+
+    #loadWaifuImageAndSetLink(url)
+    {
+        this.#waifuView.loadWaifuImage(url, url);
+        this.#waifuView.setImageLink(url);
     }
 
     #defineCustomEventResponse(eventName, method)
